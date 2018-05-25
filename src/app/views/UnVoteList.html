@@ -1,0 +1,75 @@
+﻿<div class="ng-view">
+
+    <div class="wrapper wrapper-content " ng-controller="UnVoteListCtrl as ctrl">
+        <div class="row">
+            <div class="col-md-12 col-lg-11 clearfix">
+                <div class="ibox">
+
+                    <div class="ibox-title">
+                        <h5>未投票债权人列表</h5>
+
+                    </div>
+
+
+                    <div class="ibox-content">
+
+
+                        <form class="form-horizontal clearfix" name="votingReplyEntryForm" autocomplete="off" novalidate ng-model-options="{
+                            'updateOn': 'default blur',
+                            'debounce': { 'default': 0, 'blur': 0 }
+                          }">
+
+                          <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">活动编号</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" readonly ng-model="unVoteObj.EventID" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="col-lg-2 control-label">描述</label>
+                                        <div class="col-lg-10">
+                                            <textarea style="resize: none;" rows="3" readonly class="form-control" ng-model="unVoteObj.EventDescription" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
+                    </div>
+                </div>
+
+                
+                <div class="ibox">
+
+                        <div class="ibox-content">
+
+                            <div>
+                                <table datatable="" dt-options="dt_simple_Options" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-striped table-bordered table-hover dataTables-example"></table>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+ 
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>

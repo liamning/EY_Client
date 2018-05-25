@@ -1,0 +1,115 @@
+﻿ 
+<div class="ng-view" autoscroll="true">
+
+        <div class="wrapper wrapper-content animated fadeInRight" ng-controller="VotingProjectionCtrl as ctrl">
+            <form name="votingProjectionForm" class="form-horizontal clearfix" novalidate autocomplete="off" ng-model-options="{
+                'updateOn': 'default blur',
+                'debounce': { 'default': 0, 'blur': 0 }
+              }">
+                <div class="row">
+                    <div class="col-md-12 clearfix">
+                        <div class="ibox">
+    
+                            <div class="ibox-title">
+                                <h5>投票预计</h5>
+    
+                            </div>
+    
+    
+                            <div class="ibox-content"> 
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group" ng-class="{'has-error': votingProjectionForm.eventID.$invalid && votingProjectionForm.$submitted }">
+                                            <label class="col-md-4 control-label">活动编号</label>
+                                            <div class="col-md-8">
+                                                <ui-select ng-model="votingProjectionObj.EventID"
+                                                    theme="bootstrap"
+                                                    ng-disabled="ctrl.disabled"
+                                                    required
+                                                    name="eventID"
+                                                    on-select="eventIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择活动编号">
+                                                    <ui-select-match placeholder="请输入活动编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="eventid in ctrl.eventids"
+                                                                       refresh="ctrl.refreshEventID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="eventid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <p class="help-block" ng-show="votingProjectionForm.eventID.$invalid && votingProjectionForm.$submitted">Event id required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                            <div class="form-group"  >
+                                                <label class="col-md-4 control-label">债权类别</label>
+                                                <div class="col-md-8">
+                                        
+                                                        <ui-select on-select="eventIDChange()" ng-model="votingProjectionObj.CreditType" reset-search-input="true" title="请选择债权类别"
+                                                            name="creditorType">
+                                                        <ui-select-match placeholder="请选择债权类别">{{$select.selected.Desc}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.Code as item in generalMaster('CreditType')  | filter: $select.search">
+                                                            <div>
+                                                                <div ng-bind-html="item.Desc | highlight: $select.search"></div>
+                                                            </div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">描述</label>
+                                            <div class="col-md-10">
+                                                 <textarea class="form-control" style="resize: none"   readonly ng-model="votingProjectionObj.EventDescription" />
+                                            </div>
+                                            
+                                        </div>
+                                    </div><div class="col-md-4 text-right">
+                                            <a class="btn btn-danger" ng-click="reset()">
+                                                    <i class="fa fa-refresh"></i>&nbsp;重置</a>
+                                    </div>
+                                </div>
+    
+                                <div class="space-30"></div>
+                                 
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" class="table table-striped table-bordered table-hover"></table>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+    
+                        <div class="form-group clearfix">
+    
+                            <div class="col-md-4 text-left">
+                                
+                            <a class="btn btn-success" onclick="window.history.back();"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;返回</a> 
+                            </div>
+                            
+                            <div class="col-md-8 text-right">
+                                <button class="btn btn-primary" ng-click="saveVotingProjection()"><i class="fa fa-save"></i>&nbsp;&nbsp;储存</button>
+                                <a class="btn btn-success pull-right" style="margin-left: 10px;" ng-show="votingProjectionObj.EventID" 
+                                href="/#!/index/VotingProjectionResult/{{loginInfo.currentClientID}}&{{votingProjectionObj.EventID}}">预计结果</a>
+                            </div>
+                        </div>
+    
+    
+                    </div>
+    
+                </div>
+            </form>
+    
+        </div>
+    
+    
+    
+    
+    </div>

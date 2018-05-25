@@ -1,0 +1,118 @@
+﻿ 
+<div class="ng-view" >
+
+        <div class="wrapper wrapper-content animated fadeInRight" ng-controller="GenerateOnlineVotingCtrl as ctrl">
+            <div class="row">
+                <div class="col-md-12 col-lg-10 clearfix">
+                    <div class="ibox">
+    
+                        <div class="ibox-title">
+                            <h5>投票活动活动答复</h5>
+    
+                        </div>
+    
+    
+                        <div class="ibox-content">
+    
+    
+                            <form class="form-horizontal clearfix" name="votingReplyEntryForm" autocomplete="off" novalidate ng-model-options="{
+                                'updateOn': 'default blur',
+                                'debounce': { 'default': 0, 'blur': 0 }
+                              }">
+    
+    
+                         
+    
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">活动编号</label>
+                                            <div class="col-md-8">
+    
+                                                <ui-select ng-model="votingReplyEntryObj.EventID"
+                                                    theme="bootstrap"
+                                                    ng-disabled="ctrl.disabled"
+                                                    required
+                                                    name="eventID"
+                                                    on-select="eventIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择活动编号">
+                                                    <ui-select-match placeholder="请输入活动编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="eventid in ctrl.eventids"
+                                                                       refresh="ctrl.refreshEventID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="eventid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 control-label">债权人编号</label>
+                                            <div class="col-md-8">
+                                                <ui-select ng-model="votingReplyEntryObj.CreditorID"
+                                                    theme="bootstrap"
+                                                    ng-disabled="ctrl.disabled"
+                                                    required
+                                                    name="creditorID"
+                                                    on-select="creditorIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择债权人编号">
+                                                    <ui-select-match placeholder="请输入债权人编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="creditorid in ctrl.creditorids"
+                                                                       refresh="ctrl.refreshCreditorID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="creditorid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     
+                                </div>
+      
+    
+                            </form>
+    
+    
+    
+    
+                        </div>
+                    </div>
+    
+    
+                    <button class="btn btn-primary pull-right" ng-click="generate()"><i class="fa fa-save"></i>&nbsp;&nbsp;Generate</button>
+    
+                    <div class="ibox"> 
+        
+                            <div class="ibox-content">
+        
+        
+                                    <div class="row">
+                                            <div class="col-md-6" ng-repeat="token in tokenList track by $index">
+                                                 <a href="/#!/index_Online/OnlineVotePage/{{token}}">/#!/index_Online/OnlineVotePage/{{token}}</a>
+                                            </div>
+                                        </div>
+             
+                            </div>
+                        </div>
+        
+
+    
+                </div>
+    
+            </div>
+    
+    
+        </div>
+    
+    
+    
+    
+    </div>
+    

@@ -1,0 +1,173 @@
+﻿ 
+<div class="ng-view" autoscroll="true" keypress-events>
+
+
+        <div class="wrapper wrapper-content animated fadeInRight" ng-controller="AttendanceScanCtrl">
+    
+            <form name="attendanceScanForm" novalidate autocomplete="off" class="form-horizontal clearfix" ng-model-options="{
+                'updateOn': 'default blur',
+                'debounce': { 'default': 0, 'blur': 0 }
+              }">
+                <div class="row">
+                    <div class="col-lg-8 clearfix">
+    
+                        <div class="ibox">
+    
+                            <div class="ibox-title">
+                                <h5>现场投票出席</h5>
+                            </div>
+    
+    
+                            <div class="ibox-content">
+    
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">活动编号</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" readonly ng-model="liveVotePageObj.EventID" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">描述</label>
+                                            <div class="col-lg-10">
+                                                <textarea style="resize: none;" rows="3" readonly class="form-control" ng-model="liveVotePageObj.EventDescription" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': attendanceScanForm.CreditorID.$invalid && attendanceScanForm.$submitted}">
+                                            <label class="col-lg-4 control-label">债权编号</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" id="barcode" class="form-control" name="CreditorID" ng-model="liveVotePageObj.CreditorID" ng-disabled="!manual" ng-blur="creditorIDChange();" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="col-lg-6 form-group">
+                                            <label class="control-label">
+                                                <input icheck type="checkbox" class="form-control" ng-model="manual" />&nbsp 人手输入</label>
+                                        </div>
+                                        <div class="col-lg-6 form-group">
+                                            <label class="control-label">
+                                                <input icheck type="checkbox" class="form-control" ng-model="isAgency" />&nbsp 代理</label>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-lg-6" ng-class="{'has-error': attendanceScanForm.CreditorName.$invalid && attendanceScanForm.$submitted}">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">债权人名称</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required readonly name="CreditorName" class="form-control" ng-model="liveVotePageObj.CreditorName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6"  ng-if="isAgency" ng-class="{'has-error': isAgency && attendanceScanForm.CreditAgent.$invalid && attendanceScanForm.$submitted}">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">代理人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required class="form-control" name="CreditAgent" ng-model="liveVotePageObj.CreditAgent" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-lg-6" ng-class="{'has-error':  attendanceScanForm.CreditorIDNo.$invalid && attendanceScanForm.$submitted}">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">身份证编号</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required readonly name="CreditorIDNo" class="form-control" ng-model="liveVotePageObj.CreditorIDNo" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" ng-if="isAgency" ng-class="{'has-error': isAgency && attendanceScanForm.CreditAgentIDNo.$invalid && attendanceScanForm.$submitted}">
+                                        <div class="form-group" >
+                                            <label class="col-lg-4 control-label">身份证编号</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required class="form-control" name="CreditAgentIDNo" ng-model="liveVotePageObj.CreditAgentIDNo"  />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-lg-12" ng-class="{'has-error': attendanceScanForm.$invalid && attendanceScanForm.$submitted}">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"></label>
+                                            <div class="col-lg-8">
+                                                <p class="help-block" ng-show="attendanceScanForm.$invalid && attendanceScanForm.$submitted">表格未完成.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+    
+                            </div>
+                        </div>
+    
+    
+                        <div class="row">
+                            <div class="col-lg-6 text-left">
+                        
+                                <a class="btn btn-success" onclick="window.history.back();">
+                                    <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;返回</a>
+                        
+                            </div>
+                        
+                            <div class="col-lg-6 text-right">
+                                
+                                    <!-- <button class="btn btn-primary" ng-click="generateInvitation()">
+                                        <i class="fa fa-print"></i>&nbsp;&nbsp;产生投票表格</button> -->
+                        
+                                <button class="btn btn-primary" ng-disabled="!canVote" ng-click="takeAttendance()">
+                                    <i class="fa fa-share"></i>&nbsp;&nbsp;提交</button>
+                        
+                            </div>
+                        </div>
+      
+    
+                    </div>
+    
+    
+                    <div class="col-lg-4">
+    
+    
+                        <div class="ibox">
+                            <div class="ibox-content">
+                                <h4>登记记录</h4>
+    
+                                <ul class="sortable-list connectList agile-list">
+                                    <li class="{{task.statusClass}}-element animated fadeInDown" ng-repeat="task in todoList">{{task.content}}
+                                        <div class="agile-detail">
+                                            <a href="#" class="pull-right btn btn-xs btn-white">{{task.tagName}}</a>
+                                            <i class="fa fa-clock-o"></i>{{task.date}}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+    
+    
+                    </div>
+                </div>
+            </form>
+    
+    
+    
+        </div>
+    
+    
+    
+    
+    </div>
+    

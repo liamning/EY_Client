@@ -1,0 +1,245 @@
+﻿<div class="ng-view" keypress-events>
+
+    <div class="wrapper wrapper-content " ng-controller="VotingReplyEntryCtrl as ctrl">
+        <div class="row">
+            <div class="col-md-12 col-lg-11 clearfix">
+
+                <form validate-form name="votingReplyEntryForm" autocomplete="off" class="form-horizontal clearfix" novalidate>
+                    <div class="ibox">
+
+                        <div class="ibox-title">
+                            <h5>投票活动活动答复</h5>
+
+                        </div>
+
+
+                        <div class="ibox-content">
+
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">活动编号</label>
+                                        <div class="col-md-8">
+
+                                            <ui-select ng-model="votingReplyEntryObj.EventID" theme="bootstrap" required name="eventID" on-select="eventIDChange()" reset-search-input="true"
+                                                title="请选择活动编号">
+                                                <ui-select-match placeholder="请输入活动编号">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="eventid in ctrl.eventids" refresh="ctrl.refreshEventID($select.search)" refresh-delay="0">
+                                                    <div ng-bind-html="eventid | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">描述</label>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" readonly ng-model="votingReplyEntryObj.EventDescription"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{'has-error': votingReplyEntryForm.creditorID.$invalid && votingReplyEntryForm.$submitted}">
+                                        <label class="col-md-4 control-label">债权人编号</label>
+                                        <div class="col-md-8">
+                                            <ui-select ng-model="votingReplyEntryObj.CreditorID" theme="bootstrap" required name="creditorID" on-select="creditorIDChange()"
+                                                reset-search-input="true" title="请选择债权人编号">
+                                                <ui-select-match placeholder="请输入债权人编号">{{$select.selected}}</ui-select-match>
+                                                <ui-select-choices repeat="creditorid in ctrl.creditorids" refresh="ctrl.refreshCreditorID($select.search)" refresh-delay="0">
+                                                    <div ng-bind-html="creditorid | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <p class="help-block" ng-show="votingReplyEntryForm.creditorID.$invalid && votingReplyEntryForm.$submitted">请输入债权人编号</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">债权人姓名/名称</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" readonly ng-model="votingReplyEntryObj.CreditorName" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">负责人员</label>
+                                        <div class="col-md-8">
+                                            <input type="text" readonly class="form-control" ng-model="votingReplyEntryObj.ResponsiblePerson" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row m-t-xl m-b-xl">
+                                <div class="col-md-12">
+                                    <div class="table-responsive no-borders">
+                                        <table class="table table-striped table-bordered top-20px" wt-responsive-table>
+                                            <tr style="border-bottom: 0px!important;">
+                                                <th></th>
+                                                <th style="text-align: left;">币种</th>
+                                                <th style="text-align: center;">企业账面金额</th>
+                                                <th style="text-align: center;">申报金额</th>
+                                                <th style="text-align: center;">不予确认</th>
+                                                <th style="text-align: center;">暂缓确认</th>
+                                                <th style="text-align: center;">债权确认金额</th>
+                                            </tr>
+
+                                            <tr ng-repeat="creditorAuditDetail in votingReplyEntryObj.CreditorAuditDetailList">
+                                                <td>{{creditorAuditDetail.CreditTypeDesc}}</td>
+                                                <td style="text-align: left;">{{creditorAuditDetail.Currency}}</td>
+                                                <td align="right">{{creditorAuditDetail.BookAmt | currency: ' '}}</td>
+                                                <td align="right">{{creditorAuditDetail.DeclareAmt | currency: ' '}}</td>
+                                                <td align="right">{{creditorAuditDetail.AdminExamineNotConfirm | currency: ' '}}</td>
+                                                <td align="right">{{creditorAuditDetail.AdminExamineWaitConfirm | currency: ' '}}</td>
+                                                <td align="right">{{creditorAuditDetail.AdminExamineConfirm | currency: ' '}}</td>
+                                            </tr>
+
+                                            <tr ng-show="votingReplyEntryObj.CreditorAuditDetailList.length == 0">
+                                                <td colspan="7" style="text-align: center">{{GlobalSetting.NoRecordFound}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">EMS 状态</label>
+                                        <div class="col-md-8">
+
+                                            <ui-select ng-model="votingReplyEntryObj.EMSStatus" theme="bootstrap" reset-search-input="true" title="请选择EMS 状态" name="creditorType"
+                                                ng-disabled="islawyer">
+                                                <ui-select-match placeholder="请选择EMS 状态">{{$select.selected.Desc}}</ui-select-match>
+                                                <ui-select-choices repeat="item.Code as item in generalMaster('EMSStatus')  | filter: $select.search">
+                                                    <div>
+                                                        <div ng-bind-html="item.Desc | highlight: $select.search"></div>
+                                                    </div>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">邮件号码 </label>
+                                        <div class="col-md-8">
+                                            <input type="text" ng-disabled="islawyer" class="form-control" ng-model="votingReplyEntryObj.EMSTrackingNo" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{'has-error': votingReplyEntryForm.attendance.$invalid && votingReplyEntryForm.$submitted}">
+                                        <label class="col-md-4 control-label">出席?</label>
+                                        <div class="col-md-8">
+
+
+                                            <ui-select ng-model="votingReplyEntryObj.Attendance" theme="bootstrap" ng-disabled="islawyer" reset-search-input="true" title="请选择是否出席"
+                                                name="attendance">
+                                                <ui-select-match placeholder="请选择是否出席">{{$select.selected.Desc}}</ui-select-match>
+                                                <ui-select-choices repeat="item.Code as item in generalMaster('YesNo')  | filter: $select.search">
+                                                    <div>
+                                                        <div ng-bind-html="item.Desc | highlight: $select.search"></div>
+                                                    </div>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <p class="help-block" ng-show="votingReplyEntryForm.$submitted && votingReplyEntryForm.attendance.$invalid">请输入出席</p>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div>
+
+                            <div class="row"> -->
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{'has-error': votingReplyEntryForm.voteMethod.$invalid && votingReplyEntryForm.$submitted}">
+                                        <label class="col-md-4 control-label">投票方法</label>
+                                        <div class="col-md-8">
+
+
+                                            <ui-select ng-model="votingReplyEntryObj.VoteMethod" theme="bootstrap" ng-disabled="islawyer" reset-search-input="true" title="请选择投票方法"
+                                                name="voteMethod">
+                                                <ui-select-match placeholder="请选择投票方法">{{$select.selected.Desc}}</ui-select-match>
+                                                <ui-select-choices repeat="item.Code as item in generalMaster('VoteMethod')  | filter: $select.search">
+                                                    <div>
+                                                        <div ng-bind-html="item.Desc | highlight: $select.search"></div>
+                                                    </div>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <p class="help-block" ng-show="votingReplyEntryForm.voteMethod.$invalid && votingReplyEntryForm.$submitted">请输入投票方法</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{'has-error': votingReplyEntryForm.ReplyDate.$invalid && votingReplyEntryForm.$submitted}">
+                                        <label class="col-md-4 control-label">回复日期</label>
+                                        <div class="col-md-8">
+
+                                            <div class="input-group date">
+                                                <input ng-disabled="islawyer" name='ReplyDate' date-picker class="form-control" ng-model="votingReplyEntryObj.ReplyDate"
+                                                />
+                                                <a class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </a>
+                                            </div>
+
+                                            <p class="help-block" ng-show="votingReplyEntryForm.$submitted && votingReplyEntryForm.ReplyDate.$invalid">请输入回复日期</p>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="table text-right">
+                        <button ng-show="!islawyer" type="submit" class="btn btn-primary" ng-click="saveVotingReplyEntry()">
+                            <i class="fa fa-save"></i>&nbsp;&nbsp;储存</button>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>

@@ -1,0 +1,102 @@
+﻿
+<div class="ng-view">
+    
+
+        <div class="wrapper wrapper-content animated fadeInRight" ng-controller="CreditorContactImportCtrl as ctrl">
+            <div class="row">
+                <div class="col-lg-12 clearfix">
+    
+                    <div class="ibox">
+    
+                        <div class="ibox-title">
+                            <h5>债权人联系资料导入</h5>
+    
+                        </div>
+    
+    
+                        <div class="ibox-content">
+    
+                            <form class="form-horizontal clearfix" name="creditorMasterForm">
+    
+    
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.clientID.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">客户编号</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorFile.ClientID"
+                                                           theme="bootstrap"
+                                                           required
+                                                    ng-disabled="loginInfo.currentClientID"
+                                                           name="clientID"  
+                                                           reset-search-input="true"
+                                                           title="请选择客户编号">
+                                                    <ui-select-match placeholder="请输入客户编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="clientid in ctrl.clientid"
+                                                                       refresh="ctrl.refreshClientID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="clientid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.clientID.$invalid && creditorMasterForm.$submitted">Client ID required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="col-lg-6">
+    
+                                        <div class="form-group ">
+                                            <label class="col-lg-4 control-label">资料文件</label>
+    
+                                            <div class="col-lg-8">
+    
+                                                <input type="file" class="form-control" required name="creditorFile" 
+                                                    fileread="creditorFile.DataURL" 
+                                                    fileext="creditorFile.FileExt" />
+                                            </div>
+    
+                                        </div>
+    
+                                    </div>
+                                </div>
+    
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+    
+                                        <div class="form-group ">
+                                            <label class="col-md-4 control-label">汇出债权人联系资料</label>
+    
+                                            <div class="col-md-8">  
+                                                <a class="btn btn-success"
+                                                    href="{{host}}/HttpHandler/ReportHandler.ashx?action=exportCreditorContact&ClientID={{loginInfo.currentClientID}}" target="_blank" ><i class="fa fa-download"></i></a>
+                                            </div>
+    
+                                        </div>
+    
+                                    </div>
+                                </div>
+    
+                                <div class="col-lg-12 text-right clearfix"> 
+                                    <button class="btn btn-primary" type="button" ng-disabled="ButtonDisabled" ng-click="import();"><i class="fa {{ButtonClass}}"></i>&nbsp;&nbsp;{{ButtonDisplay}}</button>
+                                </div>
+    
+                            </form>
+    
+    
+                        </div>
+                    </div>
+                    <a class="btn btn-success" onclick="window.history.back();"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp;返回</a>
+                </div>
+    
+            </div>
+    
+    
+        </div>
+    
+    
+    
+    
+    </div>

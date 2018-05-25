@@ -1,0 +1,467 @@
+﻿<style>
+    .table-input td {
+        border: 0px !important;
+    }
+
+    .table-input th {
+        border-bottom: 1px solid #e7eaec !important;
+    }
+</style>
+
+<div class="ng-view" autoscroll="true">
+
+    <div class="wrapper wrapper-content" ng-controller="VotingEventSetupCtrl as ctrl" scroll>
+        <form validate-form name="votingEventSetupForm" autocomplete="off" class="form-horizontal clearfix" novalidate ng-model-options="{
+            'updateOn': 'default blur',
+            'debounce': { 'default': 0, 'blur': 0 }
+          }">
+            <div class="row">
+                <div class="col-lg-12 clearfix">
+
+                    <div class="">
+                        <div class="ibox">
+
+                            <div class="ibox-title">
+                                <h5>投票活动设置</h5>
+                            </div>
+
+                            <div class="ibox-content" disabled-form="$root.islawyer">
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">
+                                                活动编号
+                                                <input required class="selectBookmarkInput" readonly ng-model="votingEventSetupObj.EventID" />
+                                            </label>
+
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="votingEventSetupObj.EventID" theme="bootstrap" ng-disabled="ctrl.disabled" required name="creditorID"
+                                                    on-select="eventIDChange()" reset-search-input="true" title="请选择活动编号">
+                                                    <ui-select-match placeholder="请输入活动编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="eventid in ctrl.eventids" refresh="ctrl.refreshEventID($select.search)" refresh-delay="0">
+                                                        <div ng-bind-html="eventid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4">
+
+                                        <div class="form-group" ng-class="{'has-error': votingEventSetupForm.eventDate.$invalid && votingEventSetupForm.$submitted}">
+                                            <label class="col-lg-4 control-label">活动日期</label>
+
+                                            <div class="col-lg-8">
+                                                <div class="input-group date">
+                                                    <input type="text" required class="form-control" name="eventDate" date-picker ng-model="votingEventSetupObj.EventDate" />
+                                                    <a class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </a>
+                                                </div>
+                                                <p class="help-block" ng-show="votingEventSetupForm.eventDate.$invalid && votingEventSetupForm.$submitted">Event date required.</p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-8">
+
+                                        <div class="form-group" ng-class="{'has-error': votingEventSetupForm.eventDescription.$invalid && votingEventSetupForm.$submitted}">
+                                            <label class="col-lg-2 control-label">描述</label>
+
+                                            <div class="col-lg-10">
+                                                <textarea required class="form-control" name="eventDescription" ng-model="votingEventSetupObj.EventDescription"></textarea>
+                                                <p class="help-block" ng-show="votingEventSetupForm.eventDescription.$invalid && votingEventSetupForm.$submitted">Event description required.</p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+
+                                        <div class="form-group" ng-class="{'has-error': votingEventSetupForm.effectDateFrom.$invalid && votingEventSetupForm.$submitted}">
+                                            <label class="col-lg-4 control-label">有效期</label>
+
+                                            <div class="col-lg-8">
+                                                <div class="input-group date">
+                                                    <input type="text" required class="form-control" name="effectDateFrom" date-time ng-model="votingEventSetupObj.EffectDateFrom"
+                                                    />
+                                                    <a class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </a>
+                                                </div>
+                                                <p class="help-block" ng-show="votingEventSetupForm.effectDateFrom.$invalid && votingEventSetupForm.$submitted">Effect date from required.</p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4">
+
+                                        <div class="form-group" ng-class="{'has-error': votingEventSetupForm.effectDateTo.$invalid && votingEventSetupForm.$submitted}">
+                                            <label class="col-lg-4 control-label">至</label>
+
+                                            <div class="col-lg-8">
+
+                                                <div class="input-group date">
+                                                    <input type="text" required class="form-control" name="effectDateTo" date-time ng-model="votingEventSetupObj.EffectDateTo"
+                                                    />
+                                                    <a class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </a>
+                                                </div>
+                                                <p class="help-block" ng-show="votingEventSetupForm.effectDateTo.$invalid && votingEventSetupForm.$submitted">Effect date to required.</p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div ng-show="!islawyer">
+                                    <div class="hr-line-dashed"></div>
+                                    <a class="btn btn-success btn-outline" ng-click="addNewEvent()">
+                                        <i class="fa fa-plus"></i>&nbsp;&nbsp;新增</a>
+                                    <a class="btn btn-success btn-outline" ng-show="votingEventSetupObj.CreateDate" href="/#!/index/VotingProjection/{{loginInfo.currentClientID}}&{{votingEventSetupObj.EventID}}">投票预计</a>
+                                    <a class="btn btn-success btn-outline" ng-show="votingEventSetupObj.CreateDate" href="/#!/index/LiveVoteAttendance/{{loginInfo.currentClientID}}&{{votingEventSetupObj.EventID}}">现场投票出席</a>
+                                    <a class="btn btn-success btn-outline" ng-show="votingEventSetupObj.CreateDate" href="/#!/index/LiveVotePage/{{loginInfo.currentClientID}}&{{votingEventSetupObj.EventID}}">现场投票</a>
+                                    <a class="btn btn-success btn-outline" ng-show="votingEventSetupObj.CreateDate" href="{{host}}/chart/LiveVoteResult.html?ClientID={{loginInfo.currentClientID}}&EventID={{votingEventSetupObj.EventID}}">即时投票结果</a>
+
+                                    <a class="btn btn-success btn-outline" ng-show="votingEventSetupObj.CreateDate" href="/#!/index/UnVoteList/{{loginInfo.currentClientID}}&{{votingEventSetupObj.EventID}}">未投票债权人列表</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>投票问题</h5>
+                                <div ibox-tools></div>
+                            </div>
+
+                            <div class="ibox-content">
+                                <div class="no-borders">
+                                    <table class="table table-striped table-out-bordered">
+                                        <tr style="border-bottom: 0px!important;">
+                                            <th style="width: 50px;">编号</th>
+                                            <th>问题</th>
+                                            <th>答案类型</th>
+                                            <th style="width: 60px;" ng-if="!islawyer"></th>
+                                        </tr>
+
+                                        <tr ng-repeat="votingQuestion in votingEventSetupObj.VotingQuestionList">
+                                                <td style="padding-top: 15px;">
+                                                    <span>{{$index + 1}}</span>
+                                                </td>
+                                                <td>
+                                                    <input ng-disabled="islawyer" type="text" class="form-control" ng-model="votingQuestion.Question" />
+                                                </td>
+                                                <td width="30%;">
+
+                                                    <ui-select ng-model="votingQuestion.AnswerType" theme="bootstrap" reset-search-input="true" required ng-disabled="islawyer"
+                                                        title="请选择答案类型" name="answerType">
+                                                        <ui-select-match placeholder="请选择答案类型">{{$select.selected.Desc}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.Code as item in generalMaster('answerType')  | filter: $select.search">
+                                                            <div>
+                                                                <div ng-bind-html="item.Desc | highlight: $select.search"></div>
+                                                            </div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+
+                                                </td>
+                                                <td class="text-center" ng-if="!islawyer">
+                                                    <a class="btn-outline btn-danger" ng-click="removeVotingQuestion($index)">
+                                                        <i class="fa fa-trash fa-20px padding-top-7 padding-top-7"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+
+                                        <tr ng-if="votingEventSetupObj.VotingQuestionList.length == 0 ">
+                                            <td colspan="4" class="text-center">{{GlobalSetting.NoRecordFound}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <a ng-show="!islawyer" class="btn btn-success btn-outline" ng-click="addVotingQuestion()">
+                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;新增</a>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>出席情況</h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <tr>
+                                            <th rowspan="2" width="20%"></th>
+                                            <th colspan="2" style="text-align: center;">答覆</th>
+                                            <th colspan="2" style="text-align: center;">即时</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="text-align: center;" width="20%">人数</th>
+                                            <th style="text-align: center;" width="20%">金额</th>
+                                            <th style="text-align: center;" width="20%">人数</th>
+                                            <th style="text-align: center;" width="20%">金额</th>
+                                        </tr>
+
+                                        <tr ng-repeat="summary in votingEventSetupObj.AttendanceSummary track by $index">
+                                            <!-- <td align="center">{{displayFieldName['voteMethod'][summary.VotingMethod]}}</td> -->
+                                            <td align="center">{{summary.VoteMethodDesc}}</td>
+                                            <td align="right">{{summary.ReplyHeadcount}}</td>
+                                            <td align="right">{{summary.ReplyTotalAmount | currency: ''}}</td>
+                                            <td align="right">{{summary.ActualHeadcount}}</td>
+                                            <td align="right">{{summary.ActualTotalAmount | currency: ''}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ibox">
+
+                            <div class="ibox-title">
+                                <h5>投票结果(只计出席)</h5>
+                                <div ibox-tools></div>
+
+                            </div>
+
+
+                            <div class="ibox-content">
+                                <div class="table-responsive no-borders">
+                                    <table class="table table-striped table-bordered">
+                                        <tr>
+                                            <th colspan="2"></th>
+                                            <th colspan="4" style="text-align: center;">同意</th>
+                                            <th colspan="4" style="text-align: center;">不同意</th>
+                                            <th colspan="4" style="text-align: center;">弃权</th>
+                                            <th colspan="2" style="text-align: center;">合计</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">编号</th>
+                                            <th class="text-center">问题</th>
+                                            <th class="text-center">票数</th>
+                                            <th class="text-center">票数占比%</th>
+                                            <th class="text-center">金额</th>
+                                            <th class="text-center">金额占比%</th>
+                                            <th class="text-center">票数</th>
+                                            <th class="text-center">票数占比%</th>
+                                            <th class="text-center">金额</th>
+                                            <th class="text-center">金额占比%</th>
+                                            <th class="text-center">票数</th>
+                                            <th class="text-center">票数占比%</th>
+                                            <th class="text-center">金额</th>
+                                            <th class="text-center">金额占比%</th>
+                                            <th class="text-center">票数</th>
+                                            <th class="text-center">金额</th>
+                                        </tr>
+                                        <tr ng-repeat="votingResult in votingEventSetupObj.VotingResultList">
+                                            <td align="center">{{votingResult.QuestionID}}</td>
+                                            <td>{{votingResult.Question}}</td>
+                                            <td align="right">{{votingResult.AgressNo}}</td>
+                                            <td align="right">{{(votingResult.AgressNo / votingResult.TotalNo * 100).toFixed(2)}}</td>
+                                            <td align="right">{{votingResult.AgreeAmt | currency: ' '}}</td>
+                                            <td align="right">{{(votingResult.AgreeAmt/votingResult.TotalAmt * 100).toFixed(2)}}</td>
+                                            <td align="right">{{votingResult.DisagressNo}}</td>
+                                            <td align="right">{{(votingResult.DisagressNo / votingResult.TotalNo * 100).toFixed(2)}}</td>
+                                            <td align="right">{{votingResult.DisagreeAmt | currency: ' '}}</td>
+                                            <td align="right">{{(votingResult.DisagreeAmt / votingResult.TotalAmt * 100).toFixed(2)}}</td>
+                                            <td align="right">{{votingResult.AbstentionNo}}</td>
+                                            <td align="right">{{(votingResult.AbstentionNo / votingResult.TotalNo * 100).toFixed(2)}}</td>
+                                            <td align="right">{{votingResult.AbstentionAmt | currency: ' '}}</td>
+                                            <td align="right">{{(votingResult.AbstentionAmt / votingResult.TotalAmt * 100).toFixed(2)}}</td>
+                                            <td align="right">{{votingResult.TotalNo}}</td>
+                                            <td align="right">{{votingResult.TotalAmt | currency: ' '}}</td>
+                                        </tr>
+                                        <tr ng-show="votingEventSetupObj.VotingResultList.length == 0">
+                                            <td colspan="16" class="text-center">{{GlobalSetting.NoRecordFound}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ibox">
+
+                        <div class="ibox-title">
+                            <h5>投票回复列表</h5>
+                            <div ibox-tools></div>
+                        </div>
+
+                        <div class="ibox-content">
+                            <div class="table-responsive no-borders">
+
+                                <table datatable="ng" dt-options="dt_simple_Options" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>债权人编号</th>
+                                            <th>债权人姓名/名称</th>
+                                            <!-- <th>类别</th> -->
+                                            <th>负责人员</th>
+                                            <th>企业账面金额</th>
+                                            <th>申报金额</th>
+                                            <th>不予确认</th>
+                                            <th>暂缓确认</th>
+                                            <th>债权确认金额</th>
+                                            <th>出席？</th>
+                                            <th>投票方法</th>
+                                            <th>回复日期</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="votingReply in votingEventSetupObj.VotingReplyList">
+                                            <td>{{ votingReply.CreditorID }}</td>
+                                            <td>{{ votingReply.CreditorName }}</td>
+                                            <!-- <td>{{ displayFieldName['creditorType'][votingReply.CreditorType] }}</td> -->
+                                            <!-- <td>{{ votingReply.CreditorTypeDesc }}</td> -->
+                                            <td>{{ votingReply.ResponsiblePerson }}</td>
+
+                                            <td align="right">{{ votingReply.BookAmt | currency: ' ' }}</td>
+                                            <td align="right">{{ votingReply.DeclareAmt | currency: ' ' }}</td>
+                                            <td align="right">{{ votingReply.AdminExamineNotConfirm | currency: ' ' }}</td>
+                                            <td align="right">{{ votingReply.AdminExamineWaitConfirm | currency: ' ' }}</td>
+                                            <td align="right">{{ votingReply.AdminExamineConfirm | currency: ' ' }}</td>
+
+                                            <!-- <td>{{ displayFieldName['attendance'][votingReply.Attendance] }}</td>
+                                                <td>{{ displayFieldName['voteMethod'][votingReply.VoteMethod] }}</td> -->
+                                            <td>{{ votingReply.AttendanceDesc }}</td>
+                                            <td>{{ votingReply.VoteMethodDesc }}</td>
+                                            <td>{{ votingReply.ReplyDate }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="ibox">
+
+                        <div class="ibox-title">
+                            <h5>现场出席表</h5>
+                            <div ibox-tools></div>
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <div class="table-responsive no-borders">
+
+
+                                <table datatable="ng" dt-options="dt_simple_Options" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>债权人编号</th>
+                                            <th>债权人姓名/名称</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="attendance in votingEventSetupObj.AttendanceList">
+                                            <td>{{ attendance.CreditorID }}</td>
+                                            <td>{{ attendance.CreditorName }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="ibox">
+
+                        <div class="ibox-title">
+                            <h5>投票结果详细</h5>
+                            <div ibox-tools></div>
+                        </div>
+
+                        <div class="ibox-content">
+
+                            <div class="row">
+
+
+                                    <div class="col-lg-4">
+                                            <div class="form-group" >
+                                                <label class="col-lg-4 control-label">债权类别</label>
+                                                <div class="col-lg-8">
+                                        
+                                                        <ui-select  
+                                                        on-select="getVotingResultDetailList()"
+                                                        ng-model="votingEventSetupObj.CreditType" 
+                                                        reset-search-input="true" 
+                                                        title="请选择债权类别" 
+                                                        name="CreditType">
+                                                        <ui-select-match placeholder="请选择债权类别">{{$select.selected.Desc}}</ui-select-match>
+                                                        <ui-select-choices repeat="item.Code as item in generalMaster('CreditType')  | filter: $select.search">
+                                                            <div>
+                                                                <div ng-bind-html="item.Desc | highlight: $select.search"></div>
+                                                            </div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+                                    </div>
+                            </div>
+
+                            <div class="table-responsive no-borders">
+
+
+
+                                <table datatable="ng" dt-options="dt_simple_Options" class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>债权人编号</th>
+                                            <th>债权人姓名/名称</th>
+                                            <th>问题编号</th>
+                                            <th>结果</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="votingResultDetail in votingEventSetupObj.VotingResultDetailList">
+                                            <td>{{ votingResultDetail.CreditorID }}</td>
+                                            <td>{{ votingResultDetail.CreditorName }}</td>
+                                            <td>{{ votingResultDetail.QuestionID }}</td>
+                                            <!-- <td>{{ displayFieldName['decision'][votingResultDetail.Decision] }}</td> -->
+                                            <td>{{ votingResultDetail.decisionDesc }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="floatBottomButtonGroup" class="clearfix floatBottomButtonGroup" ng-if="!islawyer">
+                        <div>
+                            <a class="btn btn-success" style="visibility: hidden;">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                            <button class="btn btn-primary pull-right" ng-click="saveEvent()">
+                                <i class="fa fa-floppy-o"></i>&nbsp;&nbsp;储存</button>
+                        </div>
+                    </div>
+                    <br />
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+
+
+
+</div>

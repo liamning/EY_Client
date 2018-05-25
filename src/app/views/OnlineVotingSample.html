@@ -1,0 +1,1146 @@
+﻿ 
+<div class="ng-view" >
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-12">
+                <h2>债权人档案</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html">主页</a>
+                    </li>
+                    <li class="active">
+                        <strong>债权人档案</strong>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    
+        <div class="wrapper wrapper-content animated fadeInRight" ng-controller="CreditorCtrl as ctrl">
+            <div class="row">
+                <div class="col-lg-10 clearfix">
+                    <form name="creditorMasterForm" autocomplete="off" class="form-horizontal clearfix" novalidate>
+    
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>债权人档案</h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+    
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.clientID.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">客户编号</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.ClientID"
+                                                    theme="bootstrap"
+                                                    required
+                                                    name="clientID"
+                                                    ng-disabled="ctrl.disabled"
+                                                    on-select="clientIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择客户编号">
+                                                    <ui-select-match placeholder="请输入客户编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="clientid in ctrl.clientid"
+                                                                       refresh="ctrl.refreshClientID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="clientid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.clientID.$invalid && creditorMasterForm.$submitted">Client ID required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-lg-5 control-label">创建用户</label>
+                                            <div class="col-lg-7">
+                                                <input type="text" class="form-control" readonly ng-model="creditorObj.CreateUser" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-lg-5 control-label">时间</label>
+                                            <div class="col-lg-7">
+                                                <input type="text" class="form-control" readonly ng-model="creditorObj.CreateDate" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditorID.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">债权人编号</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.CreditorID"
+                                                    theme="bootstrap"
+                                                    ng-disabled="ctrl.disabled"
+                                                    required
+                                                    name="creditorID"
+                                                    on-select="creditorIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择债权人编号">
+                                                    <ui-select-match placeholder="请输入债权人编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="creditorid in ctrl.creditorids"
+                                                                       refresh="ctrl.refreshCreditorID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="creditorid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.creditorID.$invalid && creditorMasterForm.$submitted">Creditor ID required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-lg-5 control-label">上次修改用户</label>
+                                            <div class="col-lg-7">
+                                                <input type="text" class="form-control" readonly ng-model="creditorObj.LastModifiedUser" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="col-lg-5 control-label">时间</label>
+                                            <div class="col-lg-7">
+                                                <input type="text" class="form-control" readonly ng-model="creditorObj.LastModifiedDate" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="space-30"></div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditorType.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">类别</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.CreditorType"
+                                                    theme="bootstrap"
+                                                    required
+                                                    reset-search-input="true"
+                                                    title="请选择债权类别"
+                                                    name="creditorType">
+                                                    <ui-select-match placeholder="请选择债权类别">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="creditorType.val as creditorType in selection.creditorType  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="creditorType.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.creditorType.$invalid && creditorMasterForm.$submitted">Creditor type required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.status.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">状况</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.Status"
+                                                    theme="bootstrap"
+                                                    required
+                                                    reset-search-input="true"
+                                                    title="请选择状况"
+                                                    name="status">
+                                                    <ui-select-match placeholder="请选择状况">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="status.val as status in selection.status  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="status.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.status.$invalid && creditorMasterForm.$submitted">Status required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">负责人员</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ResponsiblePerson" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.mainCreditor.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">是否主债权人</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.MainCreditor"
+                                                    theme="bootstrap"
+                                                    reset-search-input="true"
+                                                    required
+                                                    title="请选择是否主债权人"
+                                                    name="mainCreditor">
+                                                    <ui-select-match placeholder="请选择是否主债权人">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="mainCreditor.val as mainCreditor in selection.mainCreditor  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="mainCreditor.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.mainCreditor.$invalid && creditorMasterForm.$submitted">Main creditor required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.companyType.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">企业类别</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.CompanyType"
+                                                    theme="bootstrap"
+                                                    reset-search-input="true"
+                                                    title="请选择企业类别"
+                                                    required
+                                                    name="companyType">
+                                                    <ui-select-match placeholder="请选择企业类别">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="companyType.val as companyType in selection.companyType  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="companyType.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.companyType.$invalid && creditorMasterForm.$submitted">请输入公司类别</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditorName.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">债权人姓名/名称</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="creditorName" class="form-control" ng-model="creditorObj.CreditorName" />
+                                                <p class="help-block" ng-show="creditorMasterForm.creditorName.$invalid && creditorMasterForm.$submitted">Creditor name required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.reportDate.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">申报日期</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group date">
+                                                    <input type="text" required class="form-control" name="reportDate" date-picker ng-model="creditorObj.ReportDate" />
+                                                    <a class="input-group-addon"><i class="fa fa-calendar"></i></a>
+                                                </div>
+                                                <p class="help-block" ng-show="creditorMasterForm.reportDate.$invalid && creditorMasterForm.$submitted">Report date required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditorIDNo.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">身份证号码</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="creditorIDNo" class="form-control" ng-model="creditorObj.CreditorIDNo" />
+                                                <p class="help-block" ng-show="creditorMasterForm.creditorIDNo.$invalid && creditorMasterForm.$submitted">Creditor ID No. required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.legalRepresentative.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">法定代表人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="legalRepresentative" class="form-control" ng-model="creditorObj.LegalRepresentative" />
+                                                <p class="help-block" ng-show="creditorMasterForm.legalRepresentative.$invalid && creditorMasterForm.$submitted">Legal representative required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.legalRepPhone.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">联系电话</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="legalRepPhone" class="form-control" ng-model="creditorObj.LegalRepPhone" />
+                                                <p class="help-block" ng-show="creditorMasterForm.legalRepPhone.$invalid && creditorMasterForm.$submitted">Legal representative phone required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditAgent.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">债权申报代理人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="creditAgent" class="form-control" ng-model="creditorObj.CreditAgent" />
+                                                <p class="help-block" ng-show="creditorMasterForm.creditAgent.$invalid && creditorMasterForm.$submitted">Credit agent required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditAgentPhone.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">联系电话</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="creditAgentPhone" class="form-control" ng-model="creditorObj.CreditAgentPhone" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditAgentIDNo.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">身份证号码</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="creditAgentIDNo" class="form-control" ng-model="creditorObj.CreditAgentIDNo" />
+                                                <p class="help-block" ng-show="creditorMasterForm.creditAgentIDNo.$invalid && creditorMasterForm.$submitted">Credit agent id no required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditorRelation.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">与债权人关系</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.CreditorRelation"
+                                                    theme="bootstrap"
+                                                    required
+                                                    reset-search-input="true"
+                                                    title="请选择与债权人关系"
+                                                    name="creditorRelation">
+                                                    <ui-select-match placeholder="请选择与债权人关系">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="creditorRelation.val as creditorRelation in selection.creditorRelation  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="creditorRelation.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.creditorRelation.$invalid && creditorMasterForm.$submitted">Creditor relation required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditorAddress.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">债权人地址及邮编</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="creditorAddress" class="form-control" ng-model="creditorObj.CreditorAddress" />
+                                                <p class="help-block" ng-show="creditorMasterForm.creditorAddress.$invalid && creditorMasterForm.$submitted">Creditor address required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="space-30"></div>
+    
+                                <h5>担保人（如没有)</h5>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-12">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.creditAgentAddress.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-2 control-label">债权申报代理人地址及其邮编</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" required name="creditAgentAddress" class="form-control" ng-model="creditorObj.CreditAgentAddress" />
+                                                <p class="help-block" ng-show="creditorMasterForm.creditAgentAddress.$invalid && creditorMasterForm.$submitted">Credit agent address required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.businessCode.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">企业代码</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="businessCode" class="form-control" ng-model="creditorObj.BusinessCode" />
+                                                <p class="help-block" ng-show="creditorMasterForm.businessCode.$invalid && creditorMasterForm.$submitted">Business code required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.regPlace.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">企业注册地</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="regPlace" class="form-control" ng-model="creditorObj.RegPlace" />
+                                                <p class="help-block" ng-show="creditorMasterForm.regPlace.$invalid && creditorMasterForm.$submitted">请输入注册地</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="space-30"></div>
+    
+                                <h5>债权人</h5>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.bankName.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">开户银行及分行名称</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="bankName" class="form-control" ng-model="creditorObj.BankName" />
+                                                <p class="help-block" ng-show="creditorMasterForm.bankName.$invalid && creditorMasterForm.$submitted">Bank name required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-6">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.bankAccount.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">银行账号</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" required name="bankAccount" class="form-control" ng-model="creditorObj.BankAccount" />
+                                                <p class="help-block" ng-show="creditorMasterForm.bankAccount.$invalid && creditorMasterForm.$submitted">Bank account required.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                            </div>
+                        </div>
+    
+                        <div class="ibox">
+    
+                            <div class="ibox-title">
+                                <h5>申报债权金额</h5>
+                                <div ibox-tools></div>
+                            </div>
+    
+                            <div class="ibox-content">
+    
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.currency.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">币种</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.Currency"
+                                                    theme="bootstrap"
+                                                    required
+                                                    name="currency"
+                                                    ng-disabled="ctrl.disabled"
+                                                    on-select="currencyCodeChange($select.selected)"
+                                                    reset-search-input="true"
+                                                    title="请选择币种">
+                                                    <ui-select-match placeholder="请选择币种">{{$select.selected}}</ui-select-match>
+                                                        <ui-select-choices repeat="currencycode in ctrl.currencyCodeList"
+                                                                           refresh="ctrl.refreshCurrencyCode($select.search)"
+                                                                           refresh-delay="0">
+                                                            <div ng-bind-html="currencycode | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                <p class="help-block" ng-show="creditorMasterForm.currency.$invalid && creditorMasterForm.$submitted">请输入币种</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">汇率</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control" ng-model="creditorObj.Rate" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.amount.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-4 control-label">金额</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" required name="amount" class="form-control" ng-model="creditorObj.Amount" />
+                                                <p class="help-block" ng-show="creditorMasterForm.amount.$invalid && creditorMasterForm.$submitted">Amount</p>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">其中利息（如有）</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control" ng-model="creditorObj.Interest" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">其中</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.SecuredClaimItems" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">担保物</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.Gage" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">担保物币种</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.SecuredCurrency"
+                                                    theme="bootstrap"
+                                                    ng-disabled="ctrl.disabled"
+                                                    on-select="securedCurrencyCodeChange($select.selected)"
+                                                    reset-search-input="true"
+                                                    title="请选择币种">
+                                                    <ui-select-match placeholder="请选择币种">{{$select.selected}}</ui-select-match>
+                                                        <ui-select-choices repeat="currencycode in ctrl.currencyCodeList"
+                                                                           refresh="ctrl.refreshCurrencyCode($select.search)"
+                                                                           refresh-delay="0">
+                                                            <div ng-bind-html="currencycode | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">担保物汇率</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control" ng-model="creditorObj.SecuredRate" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">担保物金额</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control" ng-model="creditorObj.SecuredAmount" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">抵押日期</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control" ng-model="creditorObj.GageDate" date-picker />
+                                                    <a class="input-group-addon"><i class="fa fa-calendar"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">担保物价值</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control" ng-model="creditorObj.GageValue" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">连带债权</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.JointCreditor"
+                                                    theme="bootstrap"
+                                                    reset-search-input="true"
+                                                    title="请选择连带债权">
+                                                    <ui-select-match placeholder="请选择连带债权">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="jointRight.val as jointRight in selection.jointRight  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="jointRight.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">连带债权金额</label>
+                                            <div class="col-lg-8">
+                                                <input type="number" class="form-control" ng-model="creditorObj.JointCreditorAmt" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+                                <div class="space-30"></div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">当事人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.Party" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">证件号码</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.PartyIDNo" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">电子邮箱地址</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.PartyEmail" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">邮寄送达地址</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.PartyAddress" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">邮编</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.PartyZipCode" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+    
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">联系人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.PartyContact" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">联系电话</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.PartyContactPhone" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+                            </div>
+    
+                        </div>
+    
+                        <div class="ibox">
+    
+                            <div class="ibox-title">
+                                <h5>第三方担保资料</h5>
+                                <div ibox-tools></div>
+                            </div>
+    
+                            <div class="ibox-content">
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">企业类别</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="creditorObj.ThirdCompanyType"
+                                                    theme="bootstrap"
+                                                    reset-search-input="true"
+                                                    title="请选择企业类别">
+                                                    <ui-select-match placeholder="请选择企业类别">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="thirdCompanyType.val as thirdCompanyType in selection.thirdCompanyType  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="thirdCompanyType.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">债权人姓名/名称</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditorName" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">申报日期</label>
+                                            <div class="col-lg-8">
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control" ng-model="creditorObj.ThirdReportDate" date-picker />
+                                                    <a class="input-group-addon"><i class="fa fa-calendar"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">身份证号码</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditorIDNo" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">法定代表人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdLegalRepresentative" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">联系电话</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdLegalRepPhone" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">债权申报代理人</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditAgent" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">联系电话</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditAgentPhone" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">身份证号码</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditAgentIDNo" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">与债权人关系</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditorRelation" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">债权人地址及邮编</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdCreditorAddress" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">
+                                                债权申报代理人<br />
+                                                地址及邮编</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control" style="resize: none;" rows="2" ng-model="creditorObj.ThirdCreditAgentAddress" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                </div>
+    
+    
+    
+                                <div class="row">
+    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">开户银行及分行名称</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdBankName" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">银行账号</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" ng-model="creditorObj.ThirdBankAccount" />
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                </div>
+    
+                                <div class="space-30"></div>
+    
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="col-lg-2">法律意见</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control" style="resize: none" rows="4" ng-model="creditorObj.LegalOpinion"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+    
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>债权人审查意见</h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <tr>
+                                            <th colspan="3"></th>
+                                            <th colspan="3" align="center">管理人审查意见</th>
+                                            <th colspan="3" align="center">律师审查意见</th>
+                                            <th rowspan="2" align="center">管理人与律师审查意见是否一致？</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 10%">债权类別</th>
+                                            <th>企业账面金额</th>
+                                            <th>申报金额</th>
+                                            <th>不予确认</th>
+                                            <th>暂缓确认</th>
+                                            <th>债权确认金额</th>
+                                            <th>不予确认</th>
+                                            <th>暂缓确认</th>
+                                            <th>债权确认金额</th>
+                                        </tr>
+                                        <tr ng-repeat="creditorAuditDetail in creditorObj.CreditorAuditDetailList">
+                                            <td>{{creditorAuditDetail.CreditorType}}</td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.BookAmt{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="BookAmt{{$index}}" class="form-control" ng-model="creditorAuditDetail.BookAmt" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.DeclareAmt{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="DeclareAmt{{$index}}" class="form-control" ng-model="creditorAuditDetail.DeclareAmt" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.AdminExamineNotConfirm{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="AdminExamineNotConfirm{{$index}}" class="form-control" ng-model="creditorAuditDetail.AdminExamineNotConfirm" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.AdminExamineWaitConfirm{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="AdminExamineWaitConfirm{{$index}}" class="form-control" ng-model="creditorAuditDetail.AdminExamineWaitConfirm" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.AdminExamineConfirm{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="AdminExamineConfirm{{$index}}" class="form-control" ng-model="creditorAuditDetail.AdminExamineConfirm" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.LawyerExamineNotConfirm{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="LawyerExamineNotConfirm{{$index}}" class="form-control" ng-model="creditorAuditDetail.LawyerExamineNotConfirm" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.LawyerExamineWaitConfirm{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="LawyerExamineWaitConfirm{{$index}}" class="form-control" ng-model="creditorAuditDetail.LawyerExamineWaitConfirm" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.LawyerExamineConfirm{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="number" name="LawyerExamineConfirm{{$index}}" class="form-control" ng-model="creditorAuditDetail.LawyerExamineConfirm" ng-change="calcTtl()" />
+                                                </div>
+                                            </td>
+                                            <td align="center" style="vertical-align: middle">
+                                                <i class="fa fa-2x"
+                                                    ng-class="{'fa-check text-success': 
+                                                    (creditorAuditDetail.AdminExamineNotConfirm == creditorAuditDetail.LawyerExamineNotConfirm &&
+                                                     creditorAuditDetail.AdminExamineWaitConfirm == creditorAuditDetail.LawyerExamineWaitConfirm &&
+                                                     creditorAuditDetail.AdminExamineConfirm == creditorAuditDetail.LawyerExamineConfirm),
+                                                    'fa-times text-danger': 
+                                                    !(creditorAuditDetail.AdminExamineNotConfirm == creditorAuditDetail.LawyerExamineNotConfirm &&
+                                                     creditorAuditDetail.AdminExamineWaitConfirm == creditorAuditDetail.LawyerExamineWaitConfirm &&
+                                                     creditorAuditDetail.AdminExamineConfirm == creditorAuditDetail.LawyerExamineConfirm)
+                                                    }"></i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>合计</td>
+                                            <td>{{total.TtlBookAmt}}</td>
+                                            <td>{{total.TtlDeclareAmt}}</td>
+                                            <td>{{total.TtlAdminExamineNotConfirm}}</td>
+                                            <td>{{total.TtlAdminExamineWaitConfirm}}</td>
+                                            <td>{{total.TtlAdminExamineConfirm}}</td>
+                                            <td>{{total.TtlLawyerExamineNotConfirm}}</td>
+                                            <td>{{total.TtlLawyerExamineWaitConfirm}}</td>
+                                            <td>{{total.TtlLawyerExamineConfirm}}</td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>审查记录</h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="no-borders">
+                                    <table class="table table-striped ">
+                                        <tr>
+                                            <th style="width: 24%">日期</th>
+                                            <th style="width: 24%">类别</th>
+                                            <th style="width: 24%">内容</th>
+                                            <th style="width: 24%">人员</th>
+                                            <th style="width: 50px"></th>
+                                        </tr>
+                                        <tr ng-repeat="examineRecord in creditorObj.ExamineRecordList">
+                                            <td>
+                                                <input type="text" readonly class="form-control" ng-model="examineRecord.ExamineDate" /></td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.examineType{{$index}}.$invalid && creditorMasterForm.$submitted }">
+                                                    <ui-select ng-model="examineRecord.ExamineType"
+                                                        theme="bootstrap"
+                                                        required
+                                                        reset-search-input="true"
+                                                        title="请选择审查类别"
+                                                        name="examineType{{$index}}">
+                                                    <ui-select-match placeholder="请选择审查类别">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="examineType.val as examineType in selection.examineType  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="examineType.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.examineContent{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="text" required class="form-control" name="examineContent{{$index}}" ng-model="examineRecord.ExamineContent" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <input type="text" readonly class="form-control" ng-model="examineRecord.StaffName" /></td>
+                                            <td><a class="btn btn-danger" ng-click="removeExamineRecord($index)" ng-show="!examineRecord.ExamineDate"><i class="fa fa-minus"></i></a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <a class="btn btn-success" ng-click="addExamineRecord()"><i class="fa fa-plus"></i>&nbsp;&nbsp;新增</a>
+                            </div>
+                        </div>
+    
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>附件</h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="no-borders">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th style="width: 20%">附件</th>
+                                            <th style="width: 15%">名称</th>
+                                            <th style="width: 15%">类型</th>
+                                            <th style="width: 15%">页数</th>
+                                            <th style="width: 25%">备注</th>
+                                            <th style="width: 50px"></th>
+                                        </tr>
+                                        <tr ng-repeat="attachment in creditorObj.CreditorAttachmentList">
+                                            <td>
+                                                <div ng-class="{'has-error': !attachment.DataURL && creditorMasterForm.$submitted }">
+                                                    <input type="file" class="form-control" required name="fileInput{{$index}}" fileread="attachment.DataURL" fileext="attachment.FileExt" ng-hide="attachment.AttachmentID" />
+                                                    <a class="btn btn-success" href="/HttpHandler/ReportHandler.ashx?action=downloadDocumentByID&ID={{attachment.AttachmentID}}" target="_blank" ng-hide="!attachment.AttachmentID"><i class="fa fa-eye"></i>&nbsp;&nbsp;View</a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.attName{{$index}}.$invalid && creditorMasterForm.$submitted }">
+                                                    <input type="text" class="form-control" name="attName{{$index}}" required ng-model="attachment.AttName" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.attType{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <ui-select ng-model="attachment.AttType"
+                                                        theme="bootstrap"
+                                                        required
+                                                        reset-search-input="true"
+                                                        title="请选择附件类型"
+                                                        name="attType{{$index}}">
+                                                    <ui-select-match placeholder="请选择附件类型">{{$select.selected.txt}}</ui-select-match>
+                                                    <ui-select-choices repeat="attType.val as attType in selection.attType  | filter: $select.search">
+                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="attType.txt | highlight: $select.search"></div>
+                                                    </ui-select-choices> 
+                                                </ui-select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.attPage{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="text" class="form-control" name="attPage{{$index}}" required ng-model="attachment.AttPage" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': creditorMasterForm.attRemark{{$index}}.$invalid && creditorMasterForm.$submitted}">
+                                                    <input type="text" class="form-control" name="attRemark{{$index}}" required ng-model="attachment.AttRemark" />
+                                                </div>
+                                            </td>
+                                            <td><a class="btn btn-danger" ng-click="removeAttachment($index)"><i class="fa fa-minus"></i></a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <a class="btn btn-success" ng-click="addAttachment()"><i class="fa fa-plus"></i>&nbsp;&nbsp;新增</a>
+                            </div>
+                        </div>
+    
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>更改纪录</h5>
+                                <div ibox-tools></div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="table-responsive no-borders">
+                                    <table class="table table-striped table-bordered" ng-table="ngChangeRecordList">
+                                        <tr ng-repeat="changeRecord in $data">
+                                            <td title="'用户'" sortable="'StaffName'">{{changeRecord.StaffName}}</td>
+                                            <td title="'债权类別'" sortable="'CreditorType'">{{changeRecord.CreditorType}}</td>
+                                            <td title="'字段'" sortable="'Area'">{{changeRecord.Area}}</td>
+                                            <td align="right" title="'数值（由）'" sortable="'ValueFrom'">{{changeRecord.ValueFrom}}</td>
+                                            <td align="right" title="'数值（至）'" sortable="'ValueTo'">{{changeRecord.ValueTo}}</td>
+                                            <td align="right" title="'更改日期'" sortable="'UpdateDate'">{{changeRecord.UpdateDate}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="pull-right m-b-xl">
+                            <button class="btn btn-primary" ng-click="saveCreditor()"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;储存</button>
+    
+                        </div>
+    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    

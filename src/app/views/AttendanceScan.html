@@ -1,0 +1,190 @@
+﻿
+<div class="ng-view" autoscroll="true">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-12">
+            <h2>会议出席输入</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a href="index.html">主頁</a>
+                </li>
+                <li class="active">
+                    <strong>会议出席输入</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="wrapper wrapper-content" ng-controller="ContractMasterCtrl">
+        <div class="row">
+            <div class="col-lg-10 clearfix">
+
+                <div class="ibox">
+
+                    <div class="ibox-title">
+                        <h5>会议出席输入</h5>
+
+                    </div>
+
+
+                    <div class="ibox-content">
+
+                        <form class="form-horizontal clearfix">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">Client No.</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="DC0001" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">公司名称</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="东莞市金达房地产开发有限公司" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">Event ID</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="1" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">Description</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="2015年10月20日第一次债权人会议表决票" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">债权人编号</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="YZ003" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">債权人姓名</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="張綾昀" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">身份证编号</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="H203914903285" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">代理人</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">身份证编号</label>
+                                        <div class="col-lg-8">
+                                            <input type="text" class="form-control" disabled value="" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">出席時間</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group date">
+                                                <input type="datetime" readonly class="form-control" date-time ng-model="trainingReport.startDate" view="date" auto-close="true" min-view="date" format="DD/MM/YYYY HH:mm" disabled />
+                                                <a class="input-group-addon"><i class="fa fa-calendar"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">核对成功</label>
+                                        <div class="col-lg-8">
+                                            <label>
+                                                <input icheck type="radio" name="sex" id="rdoGenderM"
+                                                       ng-model="main.checkTwo" value="Y"> 是
+                                            </label>&nbsp;
+                                            <label>
+                                                <input icheck type="radio" name="sex" id="rdoGenderF"
+                                                       ng-model="main.checkTwo" value="F"> 否
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+
+
+                <div class="form-group clearfix">
+
+                    <div class="col-lg-4">
+
+                    </div>
+                    <div class="col-lg-8 text-right">
+
+                        <button class="btn btn-primary" type="button"><i class="fa fa-check"></i>&nbsp;&nbsp;提交</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>

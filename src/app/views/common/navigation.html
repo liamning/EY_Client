@@ -1,0 +1,82 @@
+﻿
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul side-navigation class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+
+                <div class="profile-element" uib-dropdown>
+                    <h2 class="text-center text-white font-bold" style="font-size: 18px">债权申报及投票系统
+                    </h2>
+                    <h5 class="text-center text-white font-bold" style="padding: 8px;">
+                            <div>{{loginInfo.UserID}}</div>
+                    </h5>
+                    
+                </div>
+                <div class="logo-element">
+                    FLEX
+                </div>
+
+            </li>
+
+            <li ui-sref-active="active">
+                <a ui-sref="index.ClientInquiry"><i class="fa fa-home"></i><span class="nav-label">主页</span></a>
+            </li>
+
+            <li ng-class="{active: $state.includes('Manager')}">
+                <a href=""><i class="fa fa-search"></i><span class="nav-label">查询</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+ 
+                    <li ui-sref-active="active">
+                        <a ui-sref="index.DocumentInquiry"><span class="nav-label">档案搜寻</span></a>
+                    </li>
+                </ul>
+            </li>
+
+            <li ng-class="{active: $state.includes('Manager')}">
+                <a href=""><i class="fa fa-line-chart"></i><span class="nav-label">报表</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                        <li ui-sref-active="active">
+                            <a ui-sref="index.EventAcknowledgementPath"><span class="nav-label">债权人活动通知信</span></a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="index.VotingCreditorGeneration"><span class="nav-label">债权人投票通知信</span></a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="index.LiveVotingFormGeneration"><span class="nav-label">债权人投票表格</span></a>
+                        </li>
+                        <!-- <li ui-sref-active="active">
+                            <a ui-sref="index.CreditorAmountReport"><span class="nav-label">債權金額</span></a>
+                        </li> -->
+                </ul>
+            </li>
+
+ 
+ 
+
+            <li ng-class="{active: $state.includes('Manager')}">
+                <a href=""><i class="fa fa-cog"></i><span class="nav-label">系统</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li ui-sref-active="active" ng-if="loginInfo.Role == '3'" >
+                        <a ui-sref="index.StaffProfile"><span class="nav-label">员工档案</span></a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="index.ResetPassword"><span class="nav-label">重置密码</span></a>
+                    </li>
+                    <li ui-sref-active="active"  ng-if="loginInfo.Role == '3'" >
+                        <a ui-sref="index.ComboValueSetting"><span class="nav-label">组合值设置</span></a>
+                    </li>
+                    <li ui-sref-active="active"  ng-if="loginInfo.Role == '3'" >
+                        <a ui-sref="index.CurrencySetting"><span class="nav-label">币种设置</span></a>
+                    </li> 
+                    <!-- <li ui-sref-active="active"  ng-if="loginInfo.Role == '3'" >
+                        <a ui-sref="index.GenerateOnlineVoting({ID: 'C00000001'})"><span class="nav-label">Generate OnlineVoting</span></a>
+                    </li> -->
+                </ul>
+            </li>
+
+
+
+        </ul>
+
+    </div>
+</nav>

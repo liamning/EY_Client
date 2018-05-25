@@ -1,0 +1,61 @@
+﻿ 
+<div class="ng-view" autoscroll="true">
+        <div class="wrapper wrapper-content" ng-controller="CurrencyMasterCtrl as ctrl">
+            <div class="row">
+                <div class="col-lg-10 clearfix">
+                    <form validate-form class="form-horizontal" name="currencyForm" autocomplete="off" novalidate ng-model-options="{
+                        'updateOn': 'default blur',
+                        'debounce': { 'default': 0, 'blur': 0 }
+                      }">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <h5>币种设置</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="no-borders">
+                                    <table class="table table-striped table-out-bordered">
+                                        <tr>
+                                            <th style="text-align: center;">币种编号</th>
+                                            <th style="text-align: center;">币种名称</th>
+                                            <!-- <th style="text-align: center;">汇率</th> -->
+                                            <th style="width: 50px;"></th>
+                                        </tr>
+                                        <tr ng-repeat="currency in currencyObj.CurrencyList">
+                                            <td>
+                                                <div ng-class="{'has-error': currencyForm.currencyCode{{$index}}.$invalid && currencyForm.$submitted }">
+                                                    <input type="text" required name="currencyCode{{$index}}" class="form-control" ng-model="currency.CurrencyCode" />
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-class="{'has-error': currencyForm.currency{{$index}}.$invalid && currencyForm.$submitted }">
+                                                    <input type="text" required name="currency{{$index}}" class="form-control" ng-model="currency.Currency" />
+                                                </div>
+                                            </td>
+                                            <!-- <td>
+                                                <div ng-class="{'has-error': currencyForm.rate{{$index}}.$invalid && currencyForm.$submitted }">
+                                                    <input type="number" required name="rate{{$index}}" class="form-control" style="text-align: right;" ng-model="currency.Rate" />
+                                                </div>
+                                            </td> -->
+                                            <td><a class="btn btn-danger" ng-click="removeCurrency($index)"><i class="fa fa-minus"></i></a></td>
+                                        </tr>
+                                        <tr ng-if="currencyObj.CurrencyList.length == 0">
+                                            <td colspan="4">{{GlobalSetting.NoRecordFound}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="has-error">
+                                    <p class="help-block m-b-md" ng-show="currencyForm.$invalid && currencyForm.$submitted">请输入所有栏位</p>
+                                </div>
+                                <a class="btn btn-success" ng-click="addCurrency()"><i class="fa fa-plus"></i>&nbsp;&nbsp;新增</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary pull-right" ng-click="save()"><i class="fa fa-floppy-o"></i>&nbsp;&nbsp;储存</button>
+                    </form>
+                </div>
+    
+            </div>
+    
+    
+        </div>
+    </div>
+    

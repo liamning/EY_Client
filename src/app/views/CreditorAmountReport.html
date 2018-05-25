@@ -1,0 +1,101 @@
+﻿ 
+
+<div class="ng-view" autoscroll="true">
+ 
+
+
+        <div class="wrapper wrapper-content animated fadeInRight" ng-controller="CreditorAmountReportCtrl as ctrl">
+    
+            <form name="votingFormGenerationForm" novalidate autocomplete="off" class="form-horizontal" ng-model-options="{
+                'updateOn': 'default blur',
+                'debounce': { 'default': 0, 'blur': 0 }
+              }">
+                <div class="row">
+                    <div class="col-lg-11 clearfix">
+    
+                        <div class="ibox">
+    
+                            <div class="ibox-title">
+                                <h5>債權金額</h5>
+    
+                            </div>
+    
+    
+                            <div class="ibox-content">
+    
+                                <div class="row">
+                                    <div class="col-lg-6">
+    
+                                        <div class="form-group" ng-class="{'has-error': votingFormGenerationForm.clientID.$invalid && votingFormGenerationForm.$submitted}">
+                                            <label class="col-lg-4 control-label">客户编号</label>
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="CreditorAmountReportObj.ClientID"
+                                                    theme="bootstrap"
+                                                    required
+                                                    name="clientID"
+                                                    ng-disabled="ctrl.disabled"
+                                                    on-select="clientIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择客户编号">
+                                                    <ui-select-match placeholder="请输入客户编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="clientid in ctrl.clientid"
+                                                                       refresh="ctrl.refreshClientID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="clientid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <p class="help-block" ng-show="votingFormGenerationForm.clientID.$invalid && votingFormGenerationForm.$submitted">请输入客户编号.</p>
+                                            </div>
+    
+                                        </div>
+    
+                                    </div>
+                                </div>
+    
+                                <!-- <div class="row">
+                                    <div class="col-lg-6">
+    
+                                        <div class="form-group" ng-class="{'has-error': votingFormGenerationForm.eventID.$invalid && votingFormGenerationForm.$submitted}">
+                                            <label class="col-lg-4 control-label">活动编号</label>
+    
+                                            <div class="col-lg-8">
+                                                <ui-select ng-model="CreditorAmountReportObj.EventID"
+                                                    theme="bootstrap"
+                                                    on-select="eventIDChange()"
+                                                    reset-search-input="true"
+                                                    title="请选择活动编号">
+                                                    <ui-select-match placeholder="请输入活动编号">{{$select.selected}}</ui-select-match>
+                                                    <ui-select-choices repeat="eventid in ctrl.eventids"
+                                                                       refresh="ctrl.refreshEventID($select.search)"
+                                                                       refresh-delay="0">
+                                                        <div ng-bind-html="eventid | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                <p class="help-block" ng-show="votingFormGenerationForm.eventID.$invalid && votingFormGenerationForm.$submitted">请输入活动编号.</p>
+                                            </div>
+    
+                                        </div>
+    
+                                    </div>
+                                </div> -->
+       
+                                <div class="clearfix">
+                                        <button class="btn btn-primary pull-right" ng-click="generateCreditorAmountReport()"><i class="fa fa-print"></i>&nbsp;&nbsp;产生</button>
+                                    </div>
+                            </div>
+                        </div>
+     
+                    </div>
+    
+                </div>
+            </form>
+    
+    
+    
+        </div>
+    
+    
+    
+    
+    </div>
+    

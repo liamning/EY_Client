@@ -1,0 +1,26 @@
+﻿
+<div class="ng-view">
+    <div class="wrapper wrapper-content  clearfix" ng-controller="LiveVoteResultCtrl">
+
+        <div class="row">
+            <div class="col-lg-3" ng-repeat="item in charts">
+
+                <plotly plotly-data="item.data" plotly-layout="item.layout" plotly-options="item.options"></plotly>
+
+            </div>
+
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-lg-3" ng-repeat="item in charts2">
+
+                <plotly plotly-data="item.data" plotly-layout="item.layout" plotly-options="item.options"></plotly>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
