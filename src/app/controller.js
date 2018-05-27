@@ -615,7 +615,7 @@ export function ClientMasterCtrl($scope, $rootScope, $http, $location, $window, 
             response = response.data;
             ////console.log(response);
             if (response.ClientMasterInfo) {
-                $scope.clientMasterObj = response.ClientMasterInfo;
+                $scope.clientMasterObj = response.ClientMasterInfo; 
             }
             else {
                 var clientID = $scope.clientMasterObj.ClientID
@@ -628,6 +628,25 @@ export function ClientMasterCtrl($scope, $rootScope, $http, $location, $window, 
             $scope.role = response.Role;
             $scope.ClientShareholderListMaxNo = response.ClientShareholderListMaxNo;
             $scope.islawyer = response.ResponsibilityType == 3;
+            $scope.ResponsibilityType = response.ResponsibilityType;
+ 
+            //
+            console.log($scope.clientMasterObj.ResponsibleStaffList);
+            $.each($scope.clientMasterObj.ResponsibleStaffList, function(index, value){
+                if($scope.role == 3){
+                    value.mode = 'edit';
+                }
+                else if(response.ResponsibilityType == 1 && $scope.role != 3) {
+                    if (value.ResponsibilityType == "1") {
+                        value.mode = 'read';
+                    } else {
+                        value.mode = 'edit';
+                    }
+                }                         
+                else 
+                    value.mode = 'read';
+            });
+            console.log($scope.clientMasterObj.ResponsibleStaffList);
 
             $scope.refresh_ui_select('ClientMaster', $scope.clientMasterObj.ClientID);
         });

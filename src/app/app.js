@@ -57,10 +57,10 @@ angular.module('app', [uirouter, uibootstrap, 'toastr', angularsanitize, uiselec
             'responseError': function (errorResponse) {
                 switch (errorResponse.status) {
                     case 403:
-                        "$window".location = '/';
+                        window.location = '/';
                         break;
                     case 500:
-                        "$window".location = '/';
+                        window.location = '/';
                         break;
                 }
                 return $q.reject(errorResponse);
