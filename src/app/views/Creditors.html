@@ -186,17 +186,8 @@
 
                                                 <input class="selectBookmarkInput" readonly ng-model="creditorObj.MainCreditor" />
                                             </label>
-                                            <div class="col-lg-8">
-                                                <!-- <ui-select ng-model="creditorObj.MainCreditor" theme="bootstrap" reset-search-input="true" ng-disabled="islawyer" title="请选择是否主债权人"
-                                                    name="mainCreditor">
-                                                    <ui-select-match placeholder="请选择是否主债权人">{{$select.selected.txt}}</ui-select-match>
-                                                    <ui-select-choices repeat="mainCreditor.val as mainCreditor in selection.YesNo  | filter: $select.search">
-                                                        <div style=" word-wrap:break-word;white-space: normal;" ng-bind-html="mainCreditor.txt | highlight: $select.search"></div>
-                                                    </ui-select-choices>
-                                                </ui-select> -->
-
-
-
+                                            <div class="col-lg-8"> 
+ 
                                                 <ui-select ng-model="creditorObj.MainCreditor" theme="bootstrap" reset-search-input="true" ng-disabled="islawyer" title="请选择是否主债权人"
                                                     name="mainCreditor">
                                                     <ui-select-match placeholder="请选择是否主债权人">{{$select.selected.Desc}}</ui-select-match>
@@ -211,6 +202,7 @@
                                             </div>
                                         </div>
                                     </div>
+
 
 
                                     <div class="col-lg-4">
@@ -454,6 +446,21 @@
                                             <div class="col-lg-8">
                                                 <input type="text" name="bankAccount" class="form-control" ng-model="creditorObj.BankAccount" />
                                                 <p class="help-block" ng-show="creditorMasterForm.bankAccount.$invalid && creditorMasterForm.$submitted">请输入银行账号</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+
+                                <div class="row">
+
+                                    <div class="col-lg-8">
+                                        <div class="form-group" ng-class="{'has-error': creditorMasterForm.WarrantyRemarks.$invalid && creditorMasterForm.$submitted}">
+                                            <label class="col-lg-2 control-label">备注</label>
+                                            <div class="col-lg-10">
+                                                <textarea name="WarrantyRemarks" class="form-control" rows="3" ng-model="creditorObj.WarrantyRemarks" />
+                                                <p class="help-block" ng-show="creditorMasterForm.WarrantyRemarks.$invalid && creditorMasterForm.$submitted">请输入备注</p>
                                             </div>
                                         </div>
                                     </div>
@@ -993,6 +1000,15 @@
 
                                                 
                                         </div>
+                                        <div class="col-lg-6">
+                                            
+                                            
+                                        <div class="col-lg-6 form-group">
+                                            <label class="control-label">
+                                                <input icheck type="checkbox" class="form-control" ng-model="creditorObj.HasSpecialCreditType" />&nbsp 有特殊债权</label>
+                                        </div> 
+
+                                        </div>
                                     </div>
 
                             <div>
@@ -1104,6 +1120,21 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            
+                            <div class="row">
+
+                                <div class="col-lg-8">
+                                    <div class="form-group" ng-class="{'has-error': creditorMasterForm.SpecialCreditTypeRemarks.$invalid && creditorMasterForm.$submitted}">
+                                        <label class="col-lg-2 control-label">特殊债权备注</label>
+                                        <div class="col-lg-10">
+                                            <textarea name="SpecialCreditTypeRemarks" class="form-control" rows="3" ng-model="creditorObj.SpecialCreditTypeRemarks" />
+                                            <p class="help-block" ng-show="creditorMasterForm.SpecialCreditTypeRemarks.$invalid && creditorMasterForm.$submitted">请输入备注</p>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
